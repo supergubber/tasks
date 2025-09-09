@@ -5,111 +5,231 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recipe Card Generator</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="theme-classic">
     <div class="container">
-        <header>
-            <h1>Recipe Card Generator</h1>
-            <div class="theme-selector">
-                <label for="theme-select">Theme:</label>
-                <select id="theme-select">
-                    <option value="classic">Classic</option>
-                    <option value="modern">Modern</option>
-                    <option value="minimal">Minimal</option>
-                </select>
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="app-title">Recipe Card Generator</h1>
+                <div class="theme-switcher">
+                    <button class="theme-btn active" data-theme="classic">Classic</button>
+                    <button class="theme-btn" data-theme="modern">Modern</button>
+                    <button class="theme-btn" data-theme="minimal">Minimal</button>
+                </div>
             </div>
         </header>
 
+        <!-- Main Content -->
         <main class="main-content">
-            <section class="form-section">
-                <h2>Recipe Details</h2>
-                <form id="recipe-form">
-                    <div class="form-group">
-                        <label for="recipe-name">Recipe Name:</label>
-                        <input type="text" id="recipe-name" placeholder="Enter recipe name">
-                    </div>
+            <!-- Recipe Form -->
+            <section class="recipe-form-section">
+                <div class="form-card">
+                    <h2 class="section-title">Create Your Recipe</h2>
+                    
+                    <form class="recipe-form">
+                        <!-- Recipe Name -->
+                        <div class="form-group">
+                            <label class="form-label">Recipe Name</label>
+                            <input 
+                                type="text" 
+                                id="recipe-name" 
+                                class="form-input" 
+                                placeholder="Enter your recipe name"
+                            >
+                        </div>
 
-                    <div class="form-row">
+                        <!-- Recipe Image -->
                         <div class="form-group">
-                            <label for="prep-time">Prep Time (minutes):</label>
-                            <input type="number" id="prep-time" placeholder="0" min="0">
-                        </div>
-                        <div class="form-group">
-                            <label for="cook-time">Cook Time (minutes):</label>
-                            <input type="number" id="cook-time" placeholder="0" min="0">
-                        </div>
-                        <div class="form-group">
-                            <label for="servings">Servings:</label>
-                            <input type="number" id="servings" placeholder="0" min="1">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Ingredients:</label>
-                        <div id="ingredients-container">
-                            <div class="ingredient-item">
-                                <input type="text" class="ingredient-input" placeholder="Enter ingredient">
-                                <button type="button" class="remove-btn" onclick="removeIngredient(this)">Remove</button>
+                            <label class="form-label">Recipe Image (Optional)</label>
+                            <div class="image-upload-container">
+                                <input type="file" id="recipe-image" class="image-input" accept="image/*">
+                                <div class="image-upload-area" id="image-upload-area">
+                                    <div class="upload-content">
+                                        <span class="upload-icon">📷</span>
+                                        <span class="upload-text">Click to add recipe photo</span>
+                                        <span class="upload-subtext">JPG, PNG or GIF up to 5MB</span>
+                                    </div>
+                                </div>
+                                <div class="image-preview" id="image-preview" style="display: none;">
+                                    <img id="preview-img" src="" alt="Recipe preview">
+                                    <button type="button" class="remove-image-btn" id="remove-image">
+                                        <span class="remove-icon">🗑️</span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                        <button type="button" id="add-ingredient">Add Ingredient</button>
-                    </div>
 
-                    <div class="form-group">
-                        <label>Instructions:</label>
-                        <div id="instructions-container">
-                            <div class="instruction-item">
-                                <textarea class="instruction-input" placeholder="Enter instruction step" rows="2"></textarea>
-                                <button type="button" class="remove-btn" onclick="removeInstruction(this)">Remove</button>
+                        <!-- Recipe Meta Info -->
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Prep Time</label>
+                                <div class="input-with-suffix">
+                                    <input 
+                                        type="number" 
+                                        id="prep-time" 
+                                        class="form-input" 
+                                        placeholder="0"
+                                        min="0"
+                                    >
+                                    <span class="input-suffix">min</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Cook Time</label>
+                                <div class="input-with-suffix">
+                                    <input 
+                                        type="number" 
+                                        id="cook-time" 
+                                        class="form-input" 
+                                        placeholder="0"
+                                        min="0"
+                                    >
+                                    <span class="input-suffix">min</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Servings</label>
+                                <input 
+                                    type="number" 
+                                    id="servings" 
+                                    class="form-input" 
+                                    placeholder="0"
+                                    min="1"
+                                >
                             </div>
                         </div>
-                        <button type="button" id="add-instruction">Add Instruction</button>
-                    </div>
 
-                    <button type="button" id="print-btn">Print Recipe</button>
-                </form>
+                        <!-- Ingredients Section -->
+                        <div class="form-group">
+                            <label class="form-label">Ingredients</label>
+                            <div class="ingredients-container" id="ingredients-container">
+                                <div class="ingredient-item">
+                                    <input 
+                                        type="text" 
+                                        class="form-input ingredient-input" 
+                                        placeholder="e.g., 2 cups all-purpose flour"
+                                    >
+                                    <button type="button" class="remove-btn" onclick="removeIngredient(this)">
+                                        <span class="remove-icon">🗑️</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <button type="button" class="add-btn" id="add-ingredient">
+                                <span class="add-icon">➕</span>
+                                Add Ingredient
+                            </button>
+                        </div>
+
+                        <!-- Instructions Section -->
+                        <div class="form-group">
+                            <label class="form-label">Instructions</label>
+                            <div class="instructions-container" id="instructions-container">
+                                <div class="instruction-item">
+                                    <textarea 
+                                        class="form-textarea instruction-input" 
+                                        placeholder="e.g., Preheat oven to 350°F and grease a baking pan..."
+                                        rows="3"
+                                    ></textarea>
+                                    <button type="button" class="remove-btn" onclick="removeInstruction(this)">
+                                        <span class="remove-icon">🗑️</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <button type="button" class="add-btn" id="add-instruction">
+                                <span class="add-icon">➕</span>
+                                Add Step
+                            </button>
+                        </div>
+
+                        <!-- Print Button -->
+                        <button type="button" class="print-btn" id="print-btn">
+                            <span class="print-icon">🖨️</span>
+
+
+
+
+
+
+
+                            Print Recipe
+                        </button>
+                    </form>
+                </div>
             </section>
 
-            <section class="preview-section">
-                <h2>Preview</h2>
-                <div id="recipe-card" class="recipe-card">
-                    <div class="recipe-header">
-                        <h3 id="preview-name">Recipe Name</h3>
-                        <div class="recipe-meta">
-                            <span class="meta-item">
-                                <strong>Prep:</strong> <span id="preview-prep">0</span> min
-                            </span>
-                            <span class="meta-item">
-                                <strong>Cook:</strong> <span id="preview-cook">0</span> min
-                            </span>
-                            <span class="meta-item">
-                                <strong>Servings:</strong> <span id="preview-servings">0</span>
-                            </span>
-                        </div>
-                    </div>
+            <!-- Recipe Preview -->
+            <section class="recipe-preview-section">
+                <div class="preview-card">
+                    <h2 class="section-title">Preview</h2>
                     
-                    <div class="recipe-content">
-                        <div class="ingredients-section">
-                            <h4>Ingredients</h4>
-                            <ul id="preview-ingredients">
-                                <li>Add ingredients to see them here</li>
-                            </ul>
+                    <div class="recipe-card" id="recipe-card">
+                        <!-- Recipe Image -->
+                        <div class="recipe-image-container" id="recipe-image-container" style="display: none;">
+                            <img class="recipe-image" id="recipe-card-image" src="" alt="Recipe">
                         </div>
                         
-                        <div class="instructions-section">
-                            <h4>Instructions</h4>
-                            <ol id="preview-instructions">
-                                <li>Add instructions to see them here</li>
-                            </ol>
+                        <!-- Recipe Header -->
+                        <div class="recipe-header">
+                            <h3 class="recipe-title" id="preview-name">Your Recipe Name</h3>
+                            
+                            <div class="recipe-meta">
+                                <div class="meta-item">
+                                    <div class="meta-icon">🕐</div>
+                                    <div class="meta-content">
+                                        <span class="meta-label">Prep</span>
+                                        <span class="meta-value" id="preview-prep">0 min</span>
+                                    </div>
+                                </div>
+                                <div class="meta-item">
+                                    <div class="meta-icon">🔥</div>
+                                    <div class="meta-content">
+                                        <span class="meta-label">Cook</span>
+                                        <span class="meta-value" id="preview-cook">0 min</span>
+                                    </div>
+                                </div>
+                                <div class="meta-item">
+                                    <div class="meta-icon">👥</div>
+                                    <div class="meta-content">
+                                        <span class="meta-label">Serves</span>
+                                        <span class="meta-value" id="preview-servings">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recipe Content -->
+                        <div class="recipe-content">
+                            <!-- Ingredients -->
+                            <div class="recipe-section">
+                                <h4 class="recipe-section-title">
+                                    <span class="section-icon">🥄</span>
+                                    Ingredients
+                                </h4>
+                                <ul class="ingredients-list" id="preview-ingredients">
+                                    <li class="placeholder-text">Add ingredients to see them here</li>
+                                </ul>
+                            </div>
+
+                            <!-- Instructions -->
+                            <div class="recipe-section">
+                                <h4 class="recipe-section-title">
+                                    <span class="section-icon">📋</span>
+                                    Instructions
+                                </h4>
+                                <ol class="instructions-list" id="preview-instructions">
+                                    <li class="placeholder-text">Add instructions to see them here</li>
+                                </ol>
+                            </div>
                         </div>
                     </div>
                 </div>
             </section>
         </main>
     </div>
-
-    <!-- Floating Action Button -->
-    <div class="floating-btn" onclick="scrollToTop()" title="Scroll to top"></div>
 
     <script src="script.js"></script>
 </body>
